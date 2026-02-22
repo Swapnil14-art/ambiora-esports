@@ -1,8 +1,8 @@
 // Simple in-memory cache for API responses
 const cache = new Map();
 
-// Default TTL is 5 minutes
-const DEFAULT_TTL = 5 * 60 * 1000;
+// Default TTL is 15 minutes to prevent frequent refetching during an active session
+const DEFAULT_TTL = 15 * 60 * 1000;
 
 /**
  * Fetches data or retrieves it from cache.
@@ -27,6 +27,19 @@ export const fetchWithCache = async (key, fetcher, ttl = DEFAULT_TTL) => {
         console.error(`Error fetching data for cache key ${key}:`, error);
         throw error;
     }
+};
+
+/**
+ * Synchronously checks if a valid cache entry exists for the given key.
+ * Useful to prevent setting loading states when data is already available.
+ * @param {string} key - Unique cache key
+ * @param {number} ttl - Time to live in milliseconds
+ * @returns {boolean}
+ */
+export const hasValidCache = (key, ttl = DEFAULT_TTL) => {
+    const cached = cache.get(key);
+    if (!cached) return false;
+    return Date.now() - cached.timestamp < ttl;
 };
 
 /**

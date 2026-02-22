@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
+import { fetchWithCache, hasValidCache, invalidateCache } from '../../lib/cache';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../components/Toast';
 import Modal from '../../components/Modal';
@@ -22,19 +23,35 @@ export default function LeaderTeams() {
     }, [gameId]);
 
     const fetchTeams = async () => {
-        const { data: memberRows } = await supabase
-            .from('players')
-            .select('teams(*, players(id))')
-            .eq('user_id', profile.id)
-            .eq('role', 'leader')
-            .eq('teams.game_id', gameId);
+        const cacheKey = `leader_teams_${profile.id}`;
 
-        const validTeams = (memberRows || []).map(r => r.teams).filter(t => t !== null);
+        if (!hasValidCache(cacheKey)) {
+            setLoading(true);
+        }
 
-        // Sort alphabetically
-        validTeams.sort((a, b) => a.team_name.localeCompare(b.team_name));
+        try {
+            const memberRows = await fetchWithCache(cacheKey, async () => {
+                const { data, error } = await supabase
+                    .from('players')
+                    .select('teams(*, players(id))')
+                    .eq('user_id', profile.id)
+                    .eq('role', 'leader')
+                    .eq('teams.game_id', gameId);
 
-        setTeams(validTeams);
+                if (error) throw error;
+                return data;
+            });
+
+            const validTeams = (memberRows || []).map(r => r.teams).filter(t => t !== null);
+
+            // Sort alphabetically
+            validTeams.sort((a, b) => a.team_name.localeCompare(b.team_name));
+
+            setTeams(validTeams);
+        } catch (error) {
+            console.error("Error fetching leader teams:", error);
+            toast.error("Failed to load teams");
+        }
         setLoading(false);
     };
 
@@ -61,6 +78,9 @@ export default function LeaderTeams() {
 
             if (error) { toast.error(error.message); return; }
             await supabase.from('audit_logs').insert({ user_id: profile.id, action: `Leader updated team: ${form.team_name}`, details: { team_id: editing.id } });
+            invalidateCache(`leader_teams_${profile.id}`);
+            invalidateCache('admin_teams_count');
+            invalidateCache(`admin_teams_${gameId}`);
             toast.success('Team updated');
         } else {
             const { data: newTeam, error } = await supabase.from('teams').insert({ team_name: form.team_name.trim(), game_id: gameId, created_by: profile.id }).select('id').single();
@@ -80,6 +100,9 @@ export default function LeaderTeams() {
             }
 
             await supabase.from('audit_logs').insert({ user_id: profile.id, action: `Leader created team: ${form.team_name}`, details: { game_id: gameId } });
+            invalidateCache(`leader_teams_${profile.id}`);
+            invalidateCache('admin_teams_count');
+            invalidateCache(`admin_teams_${gameId}`);
             toast.success('Team created');
         }
         setModalOpen(false);
@@ -94,6 +117,9 @@ export default function LeaderTeams() {
             .eq('id', team.id);
 
         if (error) { toast.error(error.message); return; }
+        invalidateCache(`leader_teams_${profile.id}`);
+        invalidateCache('admin_teams_count');
+        invalidateCache(`admin_teams_${gameId}`);
         toast.success('Team deleted');
         fetchTeams();
     };

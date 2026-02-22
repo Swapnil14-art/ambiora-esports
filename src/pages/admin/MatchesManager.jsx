@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { fetchWithCache, invalidateCache } from '../../lib/cache';
+import { fetchWithCache, invalidateCache, hasValidCache } from '../../lib/cache';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../components/Toast';
 import Modal from '../../components/Modal';
@@ -65,6 +65,11 @@ export default function MatchesManager() {
 
     const fetchMatches = async () => {
         const cacheKey = `admin_matches_${filterGame || 'all'}_${filterStatus || 'all'}`;
+
+        if (!hasValidCache(cacheKey)) {
+            setLoading(true);
+        }
+
         const data = await fetchWithCache(cacheKey, async () => {
             let query = supabase.from('matches').select('*, games(name, slug), match_teams(team_id, teams(team_name))').order('created_at', { ascending: false });
             if (filterGame) query = query.eq('game_id', filterGame);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
-import { fetchWithCache } from '../../lib/cache';
+import { fetchWithCache, hasValidCache } from '../../lib/cache';
 import { Users, Gamepad2, Shield } from 'lucide-react';
 import SkeletonLoader from '../../components/ui/SkeletonLoader';
 
@@ -14,6 +14,10 @@ export default function ViewerTeams() {
     }, []);
 
     const fetchData = async () => {
+        if (!hasValidCache('public_games') || !hasValidCache('public_teams')) {
+            setLoading(true);
+        }
+
         try {
             const [gamesRes, teamsRes] = await Promise.all([
                 fetchWithCache('public_games', async () => await supabase.from('games').select('*').order('name')),

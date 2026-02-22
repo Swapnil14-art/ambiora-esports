@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap');
 @import './styles/esports.css';
 
 /* ============================================
@@ -6,41 +6,41 @@
    ============================================ */
 :root {
   /* Backgrounds */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a2e;
-  --bg-card: #16161f;
-  --bg-card-hover: #1e1e2d;
-  --bg-input: #0e0e16;
-  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-primary: #111111;
+  --bg-secondary: #1f2326;
+  --bg-tertiary: #282c31;
+  --bg-card: #1f2326;
+  --bg-card-hover: #282c31;
+  --bg-input: #0f1923;
+  --bg-overlay: rgba(0, 0, 0, 0.85);
 
   /* Borders */
-  --border-primary: #2a2a3d;
-  --border-secondary: #1e1e2e;
-  --border-accent: rgba(181, 55, 242, 0.3);
+  --border-primary: #383e44;
+  --border-secondary: #282c31;
+  --border-accent: #ff4655;
 
-  /* Neon Accents */
-  --neon-purple: #b537f2;
-  --neon-cyan: #00d4ff;
-  --neon-red: #ff3e3e;
+  /* Neon Accents (Mapped to VALORANT Red & Off-White) */
+  --neon-purple: #ff4655;
+  --neon-cyan: #ece8e1;
+  --neon-red: #ff4655;
   --neon-green: #00ff88;
-  --neon-orange: #ff8c00;
-  --neon-yellow: #ffd700;
+  --neon-orange: #ff4655;
+  --neon-yellow: #ece8e1;
 
   /* Text Colors */
-  --text-primary: #e8e8f0;
-  --text-secondary: #8888a0;
-  --text-muted: #555570;
-  --text-accent: var(--neon-purple);
+  --text-primary: #ece8e1;
+  --text-secondary: #8b978f;
+  --text-muted: #5c6269;
+  --text-accent: #ff4655;
 
   /* Status */
-  --status-live: #ff3e3e;
-  --status-upcoming: #00d4ff;
+  --status-live: #ff4655;
+  --status-upcoming: #ece8e1;
   --status-completed: #00ff88;
 
   /* Typography */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Orbitron', monospace;
+  --font-display: 'Oswald', sans-serif;
 
   /* Spacing */
   --space-xs: 4px;
@@ -50,18 +50,18 @@
   --space-xl: 32px;
   --space-2xl: 48px;
 
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
+  /* Border Radius (Sharp for VALORANT) */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
-  --shadow-neon-purple: 0 0 20px rgba(181, 55, 242, 0.3);
-  --shadow-neon-cyan: 0 0 20px rgba(0, 212, 255, 0.3);
-  --shadow-neon-red: 0 0 20px rgba(255, 62, 62, 0.3);
+  /* Shadows (Hard, tactical shadows instead of glow) */
+  --shadow-sm: 3px 3px 0px rgba(0, 0, 0, 0.8);
+  --shadow-md: 5px 5px 0px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 8px 8px 0px rgba(0, 0, 0, 0.9);
+  --shadow-neon-purple: none;
+  --shadow-neon-cyan: none;
+  --shadow-neon-red: none;
 
   /* Layout */
   --sidebar-width: 260px;
@@ -180,50 +180,56 @@ h4 {
   align-items: center;
   gap: var(--space-sm);
   padding: 8px 16px;
-  font-family: var(--font-primary);
-  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
   font-weight: 600;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   cursor: pointer;
-  transition: transform 0.1s ease, background-color 0.1s ease, border-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease;
+  transition: transform 0.05s ease, background-color 0.1s ease, border-color 0.1s ease, color 0.1s ease, box-shadow 0.1s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   white-space: nowrap;
   transform: translateY(0) scale(1);
 }
 
 .btn:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  filter: grayscale(1);
 }
 
 .btn-primary {
   background: var(--neon-purple);
+  /* Val Red */
   color: #fff;
   border-color: var(--neon-purple);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #c54df7;
-  box-shadow: var(--shadow-neon-purple);
-  transform: translateY(-1px);
+  background: #ece8e1;
+  color: #111;
+  border-color: #ece8e1;
+  box-shadow: var(--shadow-sm);
+  transform: translate(-1px, -1px);
 }
 
 .btn-secondary {
   background: transparent;
   color: var(--text-primary);
   border-color: var(--border-primary);
+  box-shadow: none;
 }
 
 .btn-secondary:hover:not(:disabled) {
-  border-color: var(--neon-cyan);
-  color: var(--neon-cyan);
-  transform: translateY(-1px);
+  background: var(--border-primary);
+  color: #fff;
+  transform: translate(-1px, -1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-danger {
@@ -235,13 +241,13 @@ h4 {
 .btn-danger:hover:not(:disabled) {
   background: var(--neon-red);
   color: #fff;
-  box-shadow: var(--shadow-neon-red);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  transform: translate(-1px, -1px);
 }
 
 .btn-sm {
   padding: 4px 10px;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .btn-icon {

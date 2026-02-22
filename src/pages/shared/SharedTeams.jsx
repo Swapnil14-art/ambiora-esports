@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase, supabaseAdmin } from '../../lib/supabase';
+import { fetchWithCache, hasValidCache, invalidateCache } from '../../lib/cache';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../components/Toast';
 import Modal from '../../components/Modal';
@@ -32,40 +33,55 @@ export default function SharedTeams() {
     }, [profile]);
 
     const fetchData = async () => {
-        setLoading(true);
-        // 1. Fetch all games for the dropdown (needed especially for players)
-        const { data: gamesData } = await supabase.from('games').select('*').order('name');
-        setGames(gamesData || []);
+        const cacheKey = `shared_teams_${profile.id}`;
 
-        // Fetch Teams where the user is ANY kind of member (leader or member)
-        const { data: memberRows, error: err } = await supabase
-            .from('players')
-            .select('role, teams(*, games(name), players(id))')
-            .eq('user_id', profile.id);
-
-        if (err) console.error(err);
-
-        // Map and deduplicate (though user should only have 1 per game anyway)
-        const teamMap = new Map();
-        (memberRows || []).forEach(row => {
-            if (row.teams) {
-                // Determine if they are the leader of this specific team
-                teamMap.set(row.teams.id, { ...row.teams, is_owner: row.role === 'leader' });
-            }
-        });
-
-        // Add teams created by them if they somehow aren't in players (edge case / legacy admin)
-        if (isAdmin && profile.role === 'admin') {
-            const { data: ownedTeams } = await supabase
-                .from('teams')
-                .select('*, games(name), players(id)')
-                .eq('created_by', profile.id);
-            (ownedTeams || []).forEach(t => {
-                if (!teamMap.has(t.id)) teamMap.set(t.id, { ...t, is_owner: true });
-            });
+        if (!hasValidCache(cacheKey) || !hasValidCache('admin_games')) {
+            setLoading(true);
         }
 
-        setTeams(Array.from(teamMap.values()).sort((a, b) => a.team_name.localeCompare(b.team_name)));
+        try {
+            // 1. Fetch all games for the dropdown
+            const gamesData = await fetchWithCache('admin_games', async () => {
+                const { data } = await supabase.from('games').select('*').order('name');
+                return data || [];
+            });
+            setGames(gamesData);
+
+            // Fetch Teams where the user is ANY kind of member (leader or member)
+            const teamMapArray = await fetchWithCache(cacheKey, async () => {
+                const { data: memberRows, error: err } = await supabase
+                    .from('players')
+                    .select('role, teams(*, games(name), players(id))')
+                    .eq('user_id', profile.id);
+
+                if (err) throw err;
+
+                const tMap = new Map();
+                (memberRows || []).forEach(row => {
+                    if (row.teams) {
+                        tMap.set(row.teams.id, { ...row.teams, is_owner: row.role === 'leader' });
+                    }
+                });
+
+                // Add teams created by them if they somehow aren't in players (edge case / legacy admin)
+                if (isAdmin && profile.role === 'admin') {
+                    const { data: ownedTeams } = await supabase
+                        .from('teams')
+                        .select('*, games(name), players(id)')
+                        .eq('created_by', profile.id);
+                    (ownedTeams || []).forEach(t => {
+                        if (!tMap.has(t.id)) tMap.set(t.id, { ...t, is_owner: true });
+                    });
+                }
+
+                return Array.from(tMap.values()).sort((a, b) => a.team_name.localeCompare(b.team_name));
+            });
+
+            setTeams(teamMapArray);
+        } catch (error) {
+            console.error("Error fetching shared teams:", error);
+            toast.error("Failed to load teams");
+        }
         setLoading(false);
     };
 
@@ -153,6 +169,9 @@ export default function SharedTeams() {
                 toast.error(error.message);
                 return;
             }
+            invalidateCache(`shared_teams_${profile.id}`);
+            invalidateCache('admin_teams_count');
+            invalidateCache(`admin_teams_${form.game_id}`);
             toast.success('Team updated');
 
         } else {
@@ -200,6 +219,9 @@ export default function SharedTeams() {
                 return;
             }
 
+            invalidateCache(`shared_teams_${profile.id}`);
+            invalidateCache('admin_teams_count');
+            invalidateCache(`admin_teams_${form.game_id}`);
             toast.success('Team created successfully!');
 
             // Upgrade profile role so they can still see the /leader dashboard
@@ -241,6 +263,9 @@ export default function SharedTeams() {
             toast.error(error.message);
             return;
         }
+        invalidateCache(`shared_teams_${profile.id}`);
+        invalidateCache('admin_teams_count');
+        invalidateCache(`admin_teams_${team.game_id}`);
         toast.success('Team deleted');
         fetchData();
     };

@@ -13,9 +13,9 @@
     --game-fifa: #00ff88;
     --game-f1: #e10600;
 
-    /* HUD UI Borders */
+    /* HUD UI Borders (Tactical) */
     --hud-border-width: 1px;
-    --hud-glow: 0 0 10px rgba(0, 212, 255, 0.3);
+    --hud-glow: none;
 }
 
 /* ============================================
@@ -76,29 +76,15 @@ body::after {
     pointer-events: none;
 }
 
-/* Simulated scanning sweep on hover */
+/* Simulated tactical background on hover instead of sweep */
 .hud-card:hover::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(to bottom right,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.03) 40%,
-            rgba(255, 255, 255, 0.1) 50%,
-            rgba(255, 255, 255, 0) 60%,
-            rgba(255, 255, 255, 0) 100%);
-    transform: rotate(30deg);
-    animation: lightSweep 1.5s infinite linear;
-    pointer-events: none;
+    display: none;
 }
 
 .hud-card:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: var(--hud-glow), 0 8px 24px rgba(0, 0, 0, 0.6);
-    border-color: rgba(0, 212, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border-accent);
     z-index: 2;
 }
 
@@ -131,20 +117,22 @@ body::after {
     height: 40px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border-primary);
-    border-radius: 50%;
+    border-radius: 0;
+    /* Boxy instead of circle */
     font-family: var(--font-display);
     font-weight: 800;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
     position: relative;
     z-index: 5;
-    transition: color 0.2s;
+    transition: color 0.1s, border-color 0.1s, background-color 0.1s;
 }
 
 .broadcast-panel:hover .vs-separator {
-    color: var(--neon-cyan);
+    color: var(--bg-primary);
+    background-color: var(--neon-cyan);
     border-color: var(--neon-cyan);
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    box-shadow: none;
 }
 
 /* ============================================
@@ -251,18 +239,17 @@ body::after {
     height: 100%;
     background: linear-gradient(to bottom,
             transparent 0%,
-            rgba(181, 55, 242, 0.1) 50%,
-            rgba(181, 55, 242, 0.8) 100%);
-    animation: scanningLine 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+            transparent 90%,
+            var(--border-accent) 100%);
+    animation: scanningLine 1.5s infinite linear;
 }
 
 .scanner-text {
     font-family: var(--font-display);
-    font-size: 0.7rem;
-    color: var(--neon-purple);
+    font-size: 0.8rem;
+    color: var(--neon-red);
     letter-spacing: 2px;
     text-transform: uppercase;
-    animation: pulse-live 1.5s infinite;
     margin-top: var(--space-sm);
     display: flex;
     align-items: center;

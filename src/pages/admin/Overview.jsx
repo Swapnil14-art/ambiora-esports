@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { fetchWithCache } from '../../lib/cache';
+import { fetchWithCache, hasValidCache, invalidateCache } from '../../lib/cache';
 import { useAuth } from '../../contexts/AuthContext';
 import {
     Users, UserPlus, Calendar, Trophy, Activity, AlertCircle,
@@ -26,6 +26,10 @@ export default function AdminOverview() {
     }, []);
 
     const fetchStats = async () => {
+        if (!hasValidCache('admin_teams_count')) {
+            setLoading(true);
+        }
+
         try {
             const [teamsRes, playersRes, matchesRes, liveRes, gamesRes, logsRes] = await Promise.all([
                 fetchWithCache('admin_teams_count', async () => await supabase.from('teams').select('id', { count: 'exact', head: true })),

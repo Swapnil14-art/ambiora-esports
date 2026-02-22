@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase, supabaseAdmin } from '../../lib/supabase';
-import { fetchWithCache, invalidateCache } from '../../lib/cache';
+import { fetchWithCache, invalidateCache, hasValidCache } from '../../lib/cache';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../components/Toast';
 import Modal from '../../components/Modal';
@@ -56,9 +56,15 @@ export default function TeamsManager() {
 
     const handleSelectGame = async (game) => {
         setSelectedGame(game);
-        setLoadingTeams(true);
+        const cacheKey = `admin_teams_${game.id}`;
+
+        // Only show loading state if data is NOT in memory
+        if (!hasValidCache(cacheKey)) {
+            setLoadingTeams(true);
+        }
+
         try {
-            const data = await fetchWithCache(`admin_teams_${game.id}`, async () => {
+            const data = await fetchWithCache(cacheKey, async () => {
                 const res = await supabase
                     .from('teams')
                     .select('*, profiles(display_name, email)')
