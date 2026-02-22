@@ -1,0 +1,285 @@
+/* ============================================
+   ESPORTS BRANDING & CINEMATIC IDENTITY
+   Phase 21 Re-design
+   ============================================ */
+:root {
+    /* Dynamic Esports Gradients */
+    --bg-esports-radial: radial-gradient(circle at 50% 0%, rgba(30, 15, 60, 0.4), var(--bg-primary) 70%);
+    --esports-vignette: inset 0 0 150px rgba(0, 0, 0, 0.9);
+
+    /* Game Specific Accents */
+    --game-valorant: #ff4655;
+    --game-bgmi: #00e0ff;
+    --game-fifa: #00ff88;
+    --game-f1: #e10600;
+
+    /* HUD UI Borders */
+    --hud-border-width: 1px;
+    --hud-glow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+/* ============================================
+   GLOBAL CINEMATIC LAYERS
+   ============================================ */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Very subtle noise texture for cinematic grain */
+    background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.03"/%3E%3C/svg%3E');
+    pointer-events: none;
+    z-index: 9999;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: var(--esports-vignette);
+    pointer-events: none;
+    z-index: 9998;
+}
+
+#root {
+    background: var(--bg-esports-radial);
+    min-height: 100vh;
+}
+
+/* ============================================
+   HUD ELEMENTS (Dashboards / Match Cards)
+   ============================================ */
+.hud-card {
+    position: relative;
+    background: rgba(22, 22, 31, 0.85);
+    /* Slightly transparent for depth */
+    backdrop-filter: blur(10px);
+    border: var(--hud-border-width) solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+    overflow: hidden;
+}
+
+.hud-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    pointer-events: none;
+}
+
+/* Simulated scanning sweep on hover */
+.hud-card:hover::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to bottom right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.03) 40%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0) 60%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: rotate(30deg);
+    animation: lightSweep 1.5s infinite linear;
+    pointer-events: none;
+}
+
+.hud-card:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: var(--hud-glow), 0 8px 24px rgba(0, 0, 0, 0.6);
+    border-color: rgba(0, 212, 255, 0.4);
+    z-index: 2;
+}
+
+/* ============================================
+   ESPORTS ANGLES (Riot/Valorant Style)
+   ============================================ */
+.clip-angle {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+
+.clip-angle-reverse {
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+}
+
+.broadcast-panel {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(90deg, #16161f 0%, #1a1a2e 100%);
+    border-left: 4px solid var(--neon-purple);
+    padding: 0;
+    margin-bottom: var(--space-md);
+    box-shadow: var(--shadow-md);
+}
+
+.vs-separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-primary);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 5;
+    transition: color 0.2s;
+}
+
+.broadcast-panel:hover .vs-separator {
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+/* ============================================
+   ADVANCED ANIMATIONS
+   ============================================ */
+@keyframes lightSweep {
+    0% {
+        transform: translate(-50%, -50%) rotate(30deg);
+    }
+
+    100% {
+        transform: translate(50%, 50%) rotate(30deg);
+    }
+}
+
+@keyframes scanningLine {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(400%);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeSlideZoom {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.stagger-1 {
+    animation: fadeSlideZoom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.05s;
+    opacity: 0;
+}
+
+.stagger-2 {
+    animation: fadeSlideZoom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.1s;
+    opacity: 0;
+}
+
+.stagger-3 {
+    animation: fadeSlideZoom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.15s;
+    opacity: 0;
+}
+
+.stagger-4 {
+    animation: fadeSlideZoom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.stagger-5 {
+    animation: fadeSlideZoom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.25s;
+    opacity: 0;
+}
+
+.hover-parallax {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    will-change: transform;
+}
+
+.hover-parallax:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) scale3d(1.02, 1.02, 1.02);
+    z-index: 10;
+}
+
+/* ============================================
+   SKELETON SCANNER
+   ============================================ */
+.scanner-loader {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+}
+
+.scanner-loader::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(181, 55, 242, 0.1) 50%,
+            rgba(181, 55, 242, 0.8) 100%);
+    animation: scanningLine 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scanner-text {
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    color: var(--neon-purple);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse-live 1.5s infinite;
+    margin-top: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* ============================================
+   MOBILE FALLBACKS
+   ============================================ */
+@media (max-width: 768px) {
+    body::before {
+        opacity: 0.01;
+    }
+
+    /* Reduce noise slightly on mobile */
+    .hud-card:hover {
+        transform: none;
+        /* Disable expensive hover translates */
+    }
+}
