@@ -60,7 +60,7 @@ export default function ViewerFixtures() {
                 ))}
             </div>
 
-            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="card" style={{ padding: 0 }}>
                 {loading ? (
                     <div style={{ padding: 'var(--space-md)' }}><SkeletonLoader type="table" count={5} /></div>
                 ) : matches.length === 0 ? (

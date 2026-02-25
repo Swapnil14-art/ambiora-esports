@@ -114,7 +114,7 @@ export default function ViewerTeams() {
                                         <p style={{ fontFamily: 'var(--font-display)', textTransform: 'uppercase', letterSpacing: '1px' }}>Awaiting Registrations.</p>
                                     </div>
                                 ) : (
-                                    <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+                                    <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))' }}>
                                         {teamsByGame[game.id].map((team, tIndex) => (
                                             <div key={team.id} className={`card hud-card clip-angle hover-parallax stagger-${Math.min(tIndex + 1, 5)}`} style={{ padding: 'var(--space-md)', borderLeft: `4px solid ${accentColor}` }}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-sm)' }}>
@@ -125,11 +125,11 @@ export default function ViewerTeams() {
                                                         <Shield size={16} style={{ color: accentColor }} title="Approved" />
                                                     )}
                                                 </div>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
                                                     <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
                                                         Est. {new Date(team.created_at).getFullYear()}
                                                     </div>
-                                                    <div style={{ fontSize: '0.7rem', color: accentColor, fontFamily: 'var(--font-display)', letterSpacing: '1px' }}>
+                                                    <div style={{ fontSize: '0.7rem', color: accentColor, fontFamily: 'var(--font-display)', letterSpacing: '1px', textAlign: 'right', flex: '1 1 auto', paddingRight: '8px' }}>
                                                         Q1.QUALIFIED
                                                     </div>
                                                 </div>

@@ -43,7 +43,7 @@ export default function LeaderFixtures() {
                 <h1>Fixtures</h1>
             </div>
 
-            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="card" style={{ padding: 0 }}>
                 {matches.length === 0 ? (
                     <div className="empty-state"><Calendar size={32} /><p>No fixtures yet</p></div>
                 ) : (

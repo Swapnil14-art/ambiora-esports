@@ -112,7 +112,7 @@ export default function LoginPage() {
                 <div className="login-header">
                     <Gamepad2 size={36} style={{ color: 'var(--neon-purple)', margin: '0 auto 12px' }} />
                     <h1 className="text-gradient">AMBIORA ESPORTS</h1>
-                    <p>Tournament Operations Platform</p>
+                    <p style={{ fontWeight: 'bold', letterSpacing: '1px' }}>PARTICIPANTS LOGIN/SIGNUP</p>
                 </div>
 
                 {error && <div className="login-error">{error}</div>}
@@ -147,7 +147,7 @@ export default function LoginPage() {
                                 className="form-input"
                                 value={displayName}
                                 onChange={(e) => setDisplayName(e.target.value)}
-                                placeholder="Admin Name"
+                                placeholder="Display name"
                                 required
                             />
                         </div>
@@ -159,7 +159,7 @@ export default function LoginPage() {
                             className="form-input"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            placeholder={mode === 'login' ? "operator@ambiora.in" : "admin@youremail.com"}
+                            placeholder="abc@gmail.com"
                             required
                         />
                     </div>

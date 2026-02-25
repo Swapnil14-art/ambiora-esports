@@ -132,35 +132,37 @@ export default function AdminOverview() {
 
             {/* Recent Audit Logs */}
             <h2 style={{ marginBottom: 'var(--space-md)', fontSize: '0.9rem' }}>Recent Activity</h2>
-            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="card" style={{ padding: 0 }}>
                 {recentLogs.length === 0 ? (
                     <div className="empty-state">
                         <AlertCircle size={24} />
                         <p>No recent activity</p>
                     </div>
                 ) : (
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Action</th>
-                                <th>User</th>
-                                <th>Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {recentLogs.map(log => (
-                                <tr key={log.id}>
-                                    <td style={{ fontSize: '0.8rem' }}>{log.action}</td>
-                                    <td style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-                                        {log.profiles?.display_name || log.profiles?.email || '—'}
-                                    </td>
-                                    <td style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
-                                        {new Date(log.created_at).toLocaleString()}
-                                    </td>
+                    <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+                        <table className="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>User</th>
+                                    <th>Time</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {recentLogs.map(log => (
+                                    <tr key={log.id}>
+                                        <td style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>{log.action}</td>
+                                        <td style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                                            {log.profiles?.display_name || log.profiles?.email || '—'}
+                                        </td>
+                                        <td style={{ color: 'var(--text-muted)', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
+                                            {new Date(log.created_at).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>

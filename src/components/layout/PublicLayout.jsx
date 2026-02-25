@@ -22,7 +22,7 @@ export default function PublicLayout() {
                             </NavLink>
                         ) : (
                             <NavLink to="/login" className="btn btn-sm btn-secondary public-login-mobile" style={{ textDecoration: 'none' }}>
-                                <LogIn size={14} /> Staff Login
+                                <LogIn size={14} /> Login/Signup
                             </NavLink>
                         )}
                     </div>
@@ -66,7 +66,7 @@ export default function PublicLayout() {
                     </NavLink>
                 ) : (
                     <NavLink to="/login" className="btn btn-sm btn-secondary public-login-desktop" style={{ textDecoration: 'none' }}>
-                        <LogIn size={14} /> Staff Login
+                        <LogIn size={14} /> Login/Signup
                     </NavLink>
                 )}
             </header>
