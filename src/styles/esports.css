@@ -269,4 +269,29 @@ body::after {
         transform: none;
         /* Disable expensive hover translates */
     }
+
+    /* Make Match Panels responsive */
+    .broadcast-panel {
+        flex-direction: column;
+        align-items: stretch;
+        padding: var(--space-md) !important;
+        gap: var(--space-sm) !important;
+    }
+
+    .broadcast-panel>div {
+        width: 100% !important;
+    }
+
+    .broadcast-panel .vs-separator {
+        margin: var(--space-sm) auto !important;
+    }
+
+    .broadcast-panel .cell-actions {
+        border-left: none !important;
+        border-top: 1px solid var(--border-primary);
+        padding-left: 0 !important;
+        padding-top: var(--space-sm) !important;
+        justify-content: center !important;
+        margin-top: var(--space-sm);
+    }
 }
