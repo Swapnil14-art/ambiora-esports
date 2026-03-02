@@ -76,7 +76,7 @@ export default function App() {
             <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
             {/* Role-based redirect */}
-            <Route path="/" element={<Navigate to="/live" replace />} />
+            <Route path="/" element={<RoleRedirect />} />
 
             {/* ============================================ */}
             {/* PUBLIC VIEWER — NO LOGIN REQUIRED            */}
