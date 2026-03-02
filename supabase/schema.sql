@@ -300,9 +300,15 @@ CREATE POLICY "players_leader_insert" ON public.players
       WHERE teams.id = players.team_id
       AND teams.game_id = public.get_user_game_id()
     )
-    AND EXISTS (
-      SELECT 1 FROM public.players p2 
-      WHERE p2.team_id = players.team_id AND p2.user_id = auth.uid() AND p2.role = 'leader'
+    AND (
+      EXISTS (
+        SELECT 1 FROM public.players p2 
+        WHERE p2.team_id = players.team_id AND p2.user_id = auth.uid() AND p2.role = 'leader'
+      )
+      OR EXISTS (
+        SELECT 1 FROM public.teams
+        WHERE teams.id = players.team_id AND teams.created_by = auth.uid()
+      )
     )
   );
 
@@ -315,9 +321,15 @@ CREATE POLICY "players_leader_update" ON public.players
       WHERE teams.id = players.team_id
       AND teams.game_id = public.get_user_game_id()
     )
-    AND EXISTS (
-      SELECT 1 FROM public.players p2 
-      WHERE p2.team_id = players.team_id AND p2.user_id = auth.uid() AND p2.role = 'leader'
+    AND (
+      EXISTS (
+        SELECT 1 FROM public.players p2 
+        WHERE p2.team_id = players.team_id AND p2.user_id = auth.uid() AND p2.role = 'leader'
+      )
+      OR EXISTS (
+        SELECT 1 FROM public.teams
+        WHERE teams.id = players.team_id AND teams.created_by = auth.uid()
+      )
     )
   )
   WITH CHECK (
@@ -337,9 +349,15 @@ CREATE POLICY "players_leader_delete" ON public.players
       WHERE teams.id = players.team_id
       AND teams.game_id = public.get_user_game_id()
     )
-    AND EXISTS (
-      SELECT 1 FROM public.players p2 
-      WHERE p2.team_id = players.team_id AND p2.user_id = auth.uid() AND p2.role = 'leader'
+    AND (
+      EXISTS (
+        SELECT 1 FROM public.players p2 
+        WHERE p2.team_id = players.team_id AND p2.user_id = auth.uid() AND p2.role = 'leader'
+      )
+      OR EXISTS (
+        SELECT 1 FROM public.teams
+        WHERE teams.id = players.team_id AND teams.created_by = auth.uid()
+      )
     )
   );
 
