@@ -158,20 +158,20 @@ export default function Gatekeeper({ children }) {
     if (!profile.assigned_game_id) {
         return (
             <div className="app-layout">
-                <main className="main-content" style={{ marginLeft: 0, width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                    <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center', padding: '40px' }}>
+                <main className="main-content" style={{ marginLeft: 0, width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+                    <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center', padding: 'clamp(20px, 5vw, 40px)', boxSizing: 'border-box' }}>
                         <Gamepad2 size={48} style={{ color: 'var(--neon-purple)', margin: '0 auto 20px', display: 'block' }} />
-                        <h2 className="text-gradient" style={{ fontSize: '2rem', marginBottom: '10px' }}>Step 1: Game Selection</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.6' }}>
+                        <h2 className="text-gradient" style={{ fontSize: 'clamp(1.4rem, 5vw, 2rem)', marginBottom: '10px' }}>Step 1: Game Selection</h2>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.6', fontSize: 'clamp(0.85rem, 2.5vw, 1rem)' }}>
                             Welcome to the tournament operations center. To proceed, you must choose the game bracket you are managing. This action is final.
                         </p>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: '12px' }}>
                             {availableGames.map(game => (
                                 <button
                                     key={game.id}
                                     className="btn btn-secondary"
-                                    style={{ padding: '20px', fontSize: '1.1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
+                                    style={{ padding: '16px 12px', fontSize: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: 0 }}
                                     onClick={() => handleAssignGame(game.id)}
                                     disabled={assigningLoading}
                                 >
@@ -191,34 +191,34 @@ export default function Gatekeeper({ children }) {
     if (profile.role === 'game_leader' && !hasTeam && !showTeamCreation) {
         return (
             <div className="app-layout">
-                <main className="main-content" style={{ marginLeft: 0, width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                    <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center', padding: '40px' }}>
+                <main className="main-content" style={{ marginLeft: 0, width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+                    <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center', padding: 'clamp(20px, 5vw, 40px)', boxSizing: 'border-box' }}>
                         <Users size={48} style={{ color: 'var(--neon-cyan)', margin: '0 auto 20px', display: 'block' }} />
-                        <h2 className="text-gradient" style={{ fontSize: '2rem', marginBottom: '10px' }}>Step 2: Account Role</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.6' }}>
+                        <h2 className="text-gradient" style={{ fontSize: 'clamp(1.4rem, 5vw, 2rem)', marginBottom: '10px' }}>Step 2: Account Role</h2>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.6', fontSize: 'clamp(0.85rem, 2.5vw, 1rem)' }}>
                             Please select your role for this tournament. Are you joining an existing team as a player, or are you registering a new team as a Team Leader?
                         </p>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: '12px' }}>
                             <button
                                 className="btn btn-secondary"
-                                style={{ padding: '20px', fontSize: '1.1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
+                                style={{ padding: '16px 12px', fontSize: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: 0 }}
                                 onClick={() => handleAssignRole(true)}
                                 disabled={assigningLoading}
                             >
                                 <Users size={24} />
                                 <span>I am a Player</span>
-                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>I want to join a team</span>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>I want to join a team</span>
                             </button>
                             <button
                                 className="btn btn-primary"
-                                style={{ padding: '20px', fontSize: '1.1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}
+                                style={{ padding: '16px 12px', fontSize: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', minWidth: 0 }}
                                 onClick={() => setShowTeamCreation(true)}
                                 disabled={assigningLoading}
                             >
                                 <ShieldAlert size={24} />
                                 <span>I am a Team Leader</span>
-                                <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)' }}>I want to register a team</span>
+                                <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>I want to register a team</span>
                             </button>
                         </div>
                     </div>
@@ -231,11 +231,11 @@ export default function Gatekeeper({ children }) {
     if (!hasTeam) {
         return (
             <div className="app-layout">
-                <main className="main-content" style={{ marginLeft: 0, width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-                    <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center', padding: '40px' }}>
+                <main className="main-content" style={{ marginLeft: 0, width: '100%', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+                    <div className="card" style={{ maxWidth: '600px', width: '100%', textAlign: 'center', padding: 'clamp(20px, 5vw, 40px)', boxSizing: 'border-box' }}>
                         <Users size={48} style={{ color: 'var(--neon-cyan)', margin: '0 auto 20px', display: 'block' }} />
-                        <h2 className="text-gradient" style={{ fontSize: '2rem', marginBottom: '10px' }}>Step 2: Initialize Roster</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.6' }}>
+                        <h2 className="text-gradient" style={{ fontSize: 'clamp(1.4rem, 5vw, 2rem)', marginBottom: '10px' }}>Step 2: Initialize Roster</h2>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', lineHeight: '1.6', fontSize: 'clamp(0.85rem, 2.5vw, 1rem)' }}>
                             You have successfully claimed your game. Before accessing the control panel operations, you must create at least one active team to initialize the bracket.
                         </p>
 
@@ -247,14 +247,14 @@ export default function Gatekeeper({ children }) {
                                     value={teamName}
                                     onChange={e => setTeamName(e.target.value)}
                                     placeholder="Enter official team name..."
-                                    style={{ padding: '16px', fontSize: '1.1rem' }}
+                                    style={{ padding: '14px', fontSize: '1rem' }}
                                     autoFocus
                                 />
                             </div>
                             <button
                                 type="submit"
                                 className="btn btn-primary"
-                                style={{ padding: '16px', fontSize: '1.1rem', display: 'flex', justifyContent: 'center', gap: '10px' }}
+                                style={{ padding: '14px', fontSize: '1rem', display: 'flex', justifyContent: 'center', gap: '10px' }}
                                 disabled={assigningLoading}
                             >
                                 <Plus size={20} /> Deploy Team
