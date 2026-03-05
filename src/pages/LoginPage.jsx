@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Gamepad2, Loader, UserPlus } from 'lucide-react';
+import { Gamepad2, Loader, UserPlus, Tv } from 'lucide-react';
 
 export default function LoginPage() {
     const [mode, setMode] = useState('login'); // 'login' or 'signup'
@@ -193,6 +193,16 @@ export default function LoginPage() {
                 <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
                     {mode === 'signup' ? 'New accounts act as Game Leaders. Admins must assign your specific game later.' : 'Access restricted. Default role requires manual assignment.'}
                 </p>
+
+                <div style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px', textAlign: 'center' }}>
+                    <Link
+                        to="/live"
+                        className="btn btn-secondary"
+                        style={{ width: '100%', justifyContent: 'center', padding: '10px', fontSize: '0.85rem', gap: '8px', textDecoration: 'none' }}
+                    >
+                        <Tv size={16} /> WATCH LIVE
+                    </Link>
+                </div>
             </div>
         </div>
     );
