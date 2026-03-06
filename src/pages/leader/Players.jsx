@@ -134,7 +134,6 @@ export default function LeaderPlayers() {
         <div>
             <div className="page-header">
                 <h1>Players</h1>
-                <button className="btn btn-primary" onClick={openCreate}><Plus size={14} /> Add Player</button>
             </div>
 
             <div className="filters-bar">
@@ -148,7 +147,7 @@ export default function LeaderPlayers() {
                 {loading ? (
                     <div style={{ padding: 'var(--space-md)' }}><SkeletonLoader type="table" count={5} /></div>
                 ) : players.length === 0 ? (
-                    <div className="empty-state"><p>No players. Add players to your teams.</p></div>
+                    <div className="empty-state"><p>No players found.</p></div>
                 ) : (
                     <div className="table-responsive">
                         <table className="data-table">
@@ -159,7 +158,6 @@ export default function LeaderPlayers() {
                                     <th>Team</th>
                                     <th>Phone</th>
                                     <th>Year</th>
-                                    <th style={{ textAlign: 'right' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,10 +168,6 @@ export default function LeaderPlayers() {
                                         <td>{p.teams?.team_name}</td>
                                         <td style={{ color: 'var(--text-secondary)' }}>{p.phone || '—'}</td>
                                         <td style={{ color: 'var(--text-secondary)' }}>{p.year_of_study || '—'}</td>
-                                        <td className="cell-actions">
-                                            <button className="btn-icon" onClick={() => openEdit(p)}><Pencil size={14} /></button>
-                                            <button className="btn-icon" onClick={() => handleDelete(p)} style={{ color: 'var(--neon-red)' }}><Trash2 size={14} /></button>
-                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -182,49 +176,6 @@ export default function LeaderPlayers() {
                 )}
             </div>
 
-            <Modal
-                isOpen={modalOpen}
-                onClose={() => setModalOpen(false)}
-                title={editing ? 'Edit Player' : 'Add Player'}
-                footer={
-                    <>
-                        <button className="btn btn-secondary" onClick={() => setModalOpen(false)}>Cancel</button>
-                        <button className="btn btn-primary" onClick={handleSave}>{editing ? 'Update' : 'Add'}</button>
-                    </>
-                }
-            >
-                <div className="form-group">
-                    <label className="form-label">Name</label>
-                    <input className="form-input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Full name" autoFocus />
-                </div>
-                <div className="form-group">
-                    <label className="form-label">In-Game Name</label>
-                    <input className="form-input" value={form.in_game_name} onChange={e => setForm({ ...form, in_game_name: e.target.value })} placeholder="IGN" />
-                </div>
-                <div className="form-group">
-                    <label className="form-label">Team</label>
-                    <select className="form-select" value={form.team_id} onChange={e => setForm({ ...form, team_id: e.target.value })}>
-                        <option value="">Select team</option>
-                        {teams.map(t => <option key={t.id} value={t.id}>{t.team_name}</option>)}
-                    </select>
-                </div>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label className="form-label">Phone</label>
-                        <input className="form-input" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="Phone" />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Year of Study</label>
-                        <select className="form-select" value={form.year_of_study} onChange={e => setForm({ ...form, year_of_study: e.target.value })}>
-                            <option value="">Select</option>
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
-                        </select>
-                    </div>
-                </div>
-            </Modal>
         </div>
     );
 }

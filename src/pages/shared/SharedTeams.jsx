@@ -274,9 +274,6 @@ export default function SharedTeams() {
         <div>
             <div className="page-header">
                 <h1>My Teams</h1>
-                <button className="btn btn-primary" onClick={openCreate}>
-                    <Plus size={14} /> Create Team
-                </button>
             </div>
 
             <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
@@ -284,7 +281,7 @@ export default function SharedTeams() {
                     <div style={{ padding: 'var(--space-md)' }}><SkeletonLoader type="table" count={5} /></div>
                 ) : teams.length === 0 ? (
                     <div className="empty-state">
-                        <p>You aren't associated with any teams yet. Create your first team to get started!</p>
+                        <p>No teams found.</p>
                     </div>
                 ) : (
                     <div className="table-responsive">
@@ -295,7 +292,6 @@ export default function SharedTeams() {
                                     <th>Game</th>
                                     <th>Players</th>
                                     <th>My Role</th>
-                                    <th style={{ textAlign: 'right' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -311,18 +307,6 @@ export default function SharedTeams() {
                                                 <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>Member</span>
                                             )}
                                         </td>
-                                        <td className="cell-actions">
-                                            {t.is_owner && (
-                                                <>
-                                                    <button className="btn-icon" onClick={() => openEdit(t)}>
-                                                        <Pencil size={14} />
-                                                    </button>
-                                                    <button className="btn-icon" onClick={() => handleDelete(t)} style={{ color: 'var(--neon-red)' }}>
-                                                        <Trash2 size={14} />
-                                                    </button>
-                                                </>
-                                            )}
-                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -331,93 +315,6 @@ export default function SharedTeams() {
                 )}
             </div>
 
-            <Modal
-                isOpen={modalOpen}
-                onClose={() => setModalOpen(false)}
-                title={editing ? 'Edit Team' : 'Create Team'}
-                footer={
-                    <>
-                        <button className="btn btn-secondary" onClick={() => setModalOpen(false)}>
-                            {createStep === 'blocked' ? 'Close' : 'Cancel'}
-                        </button>
-
-                        {createStep === 1 && !editing && (
-                            <button className="btn btn-primary" onClick={handleNextStep} disabled={verifying}>
-                                {verifying ? 'Checking...' : 'Next'}
-                            </button>
-                        )}
-
-                        {createStep === 2 && (
-                            <button className="btn btn-primary" onClick={handleSave}>
-                                {editing ? 'Update' : 'Create'}
-                            </button>
-                        )}
-                    </>
-                }
-            >
-                {createStep === 1 && !editing && (
-                    <div className="form-group">
-                        <label className="form-label">Select Game Bracket</label>
-                        <select
-                            className="form-select"
-                            value={form.game_id}
-                            onChange={e => setForm({ ...form, game_id: e.target.value })}
-                        >
-                            <option value="">-- Choose a Game --</option>
-                            {games.map(g => (
-                                <option key={g.id} value={g.id}>{g.name}</option>
-                            ))}
-                        </select>
-                        <p style={{ marginTop: '10px', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                            You can only create or join one team per game.
-                        </p>
-                    </div>
-                )}
-
-                {createStep === 'blocked' && (
-                    <div className="empty-state" style={{ padding: '30px', textAlign: 'center', border: '1px solid rgba(255, 0, 51, 0.3)', borderRadius: '12px', background: 'rgba(255, 0, 51, 0.05)' }}>
-                        <h3 style={{ color: 'var(--neon-red)', margin: '0 0 10px 0', fontSize: '1.2rem' }}>Association Found</h3>
-                        <p style={{ margin: 0, color: 'var(--text-secondary)' }}>
-                            You are already part of a team in this game.<br /><br />
-                            <strong style={{ color: 'var(--text-primary)' }}>One user can have only one team per game.</strong>
-                        </p>
-                    </div>
-                )}
-
-                {createStep === 2 && (
-                    <>
-                        <div className="form-group">
-                            <label className="form-label">Team Name <span style={{ color: 'var(--neon-red)' }}>*</span></label>
-                            <input
-                                className="form-input"
-                                placeholder="Enter team name..."
-                                value={form.team_name}
-                                onChange={e => setForm({ ...form, team_name: e.target.value })}
-                                autoFocus
-                            />
-                        </div>
-
-                        {isAdmin && !editing && (
-                            <div className="form-group">
-                                <label className="form-label">Assign Team Leader (Optional)</label>
-                                <select
-                                    className="form-select"
-                                    value={form.assigned_leader_id}
-                                    onChange={e => setForm({ ...form, assigned_leader_id: e.target.value })}
-                                >
-                                    <option value="">-- Set Myself as Leader --</option>
-                                    {eligibleLeaders.map(p => (
-                                        <option key={p.id} value={p.id}>{p.display_name || p.email}</option>
-                                    ))}
-                                </select>
-                                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                                    If you assign a player, they will become the owner and 'Team Leader' of this team.
-                                </p>
-                            </div>
-                        )}
-                    </>
-                )}
-            </Modal>
         </div>
     );
 }

@@ -128,14 +128,13 @@ export default function LeaderTeams() {
         <div>
             <div className="page-header">
                 <h1>My Teams</h1>
-                <button className="btn btn-primary" onClick={openCreate}><Plus size={14} /> Create Team</button>
             </div>
 
             <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
                 {loading ? (
                     <div style={{ padding: 'var(--space-md)' }}><SkeletonLoader type="table" count={5} /></div>
                 ) : teams.length === 0 ? (
-                    <div className="empty-state"><p>No teams yet. Create your first team.</p></div>
+                    <div className="empty-state"><p>No teams found.</p></div>
                 ) : (
                     <table className="data-table">
                         <thead>
@@ -143,7 +142,6 @@ export default function LeaderTeams() {
                                 <th>Team Name</th>
                                 <th>Players</th>
                                 <th>Created</th>
-                                <th style={{ textAlign: 'right' }}>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,10 +150,6 @@ export default function LeaderTeams() {
                                     <td style={{ fontWeight: 600 }}>{t.team_name}</td>
                                     <td style={{ color: 'var(--neon-cyan)' }}>{t.players?.length || 0}</td>
                                     <td style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{new Date(t.created_at).toLocaleDateString()}</td>
-                                    <td className="cell-actions">
-                                        <button className="btn-icon" onClick={() => openEdit(t)}><Pencil size={14} /></button>
-                                        <button className="btn-icon" onClick={() => handleDelete(t)} style={{ color: 'var(--neon-red)' }}><Trash2 size={14} /></button>
-                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -163,22 +157,6 @@ export default function LeaderTeams() {
                 )}
             </div>
 
-            <Modal
-                isOpen={modalOpen}
-                onClose={() => setModalOpen(false)}
-                title={editing ? 'Edit Team' : 'Create Team'}
-                footer={
-                    <>
-                        <button className="btn btn-secondary" onClick={() => setModalOpen(false)}>Cancel</button>
-                        <button className="btn btn-primary" onClick={handleSave}>{editing ? 'Update' : 'Create'}</button>
-                    </>
-                }
-            >
-                <div className="form-group">
-                    <label className="form-label">Team Name</label>
-                    <input className="form-input" value={form.team_name} onChange={e => setForm({ team_name: e.target.value })} placeholder="Team name" autoFocus />
-                </div>
-            </Modal>
         </div>
     );
 }
