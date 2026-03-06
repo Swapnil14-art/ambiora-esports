@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { fetchWithCache, hasValidCache } from '../../lib/cache';
-import { Users, Gamepad2, Shield } from 'lucide-react';
+import { Users, Gamepad2, Shield, ShieldX } from 'lucide-react';
 import SkeletonLoader from '../../components/ui/SkeletonLoader';
 
 export default function ViewerTeams() {
@@ -115,26 +115,31 @@ export default function ViewerTeams() {
                                     </div>
                                 ) : (
                                     <div className="stats-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))' }}>
-                                        {teamsByGame[game.id].map((team, tIndex) => (
-                                            <div key={team.id} className={`card hud-card clip-angle hover-parallax stagger-${Math.min(tIndex + 1, 5)}`} style={{ padding: 'var(--space-md)', borderLeft: `4px solid ${accentColor}` }}>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-sm)' }}>
-                                                    <div style={{ fontWeight: 800, fontSize: '1.2rem', fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: '#fff' }}>
-                                                        {team.team_name}
+                                        {teamsByGame[game.id].map((team, tIndex) => {
+                                            const isDQ = team.status === 'disqualified';
+                                            return (
+                                                <div key={team.id} className={`card hud-card clip-angle hover-parallax stagger-${Math.min(tIndex + 1, 5)}`} style={{ padding: 'var(--space-md)', borderLeft: `4px solid ${isDQ ? 'var(--neon-red)' : accentColor}`, opacity: isDQ ? 0.55 : 1 }}>
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 'var(--space-sm)' }}>
+                                                        <div style={{ fontWeight: 800, fontSize: '1.2rem', fontFamily: 'var(--font-display)', textTransform: 'uppercase', color: isDQ ? 'var(--text-muted)' : '#fff', textDecoration: isDQ ? 'line-through' : 'none' }}>
+                                                            {team.team_name}
+                                                        </div>
+                                                        {isDQ ? (
+                                                            <ShieldX size={16} style={{ color: 'var(--neon-red)' }} title="Disqualified" />
+                                                        ) : (
+                                                            <Shield size={16} style={{ color: accentColor }} title="Qualified" />
+                                                        )}
                                                     </div>
-                                                    {team.status === 'approved' && (
-                                                        <Shield size={16} style={{ color: accentColor }} title="Approved" />
-                                                    )}
+                                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
+                                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                                            Est. {new Date(team.created_at).getFullYear()}
+                                                        </div>
+                                                        <div style={{ fontSize: '0.7rem', color: isDQ ? 'var(--neon-red)' : accentColor, fontFamily: 'var(--font-display)', letterSpacing: '1px', textAlign: 'right', flex: '1 1 auto', paddingRight: '8px' }}>
+                                                            {isDQ ? 'DISQUALIFIED' : 'QUALIFIED'}
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '4px' }}>
-                                                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                                                        Est. {new Date(team.created_at).getFullYear()}
-                                                    </div>
-                                                    <div style={{ fontSize: '0.7rem', color: accentColor, fontFamily: 'var(--font-display)', letterSpacing: '1px', textAlign: 'right', flex: '1 1 auto', paddingRight: '8px' }}>
-                                                        Q1.QUALIFIED
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </section>
