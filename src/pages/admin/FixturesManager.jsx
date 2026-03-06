@@ -15,6 +15,7 @@ export default function FixturesManager() {
     const [selectedGame, setSelectedGame] = useState(null);
     const [fixtures, setFixtures] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [availableTeams, setAvailableTeams] = useState([]);
 
     // Modal State
     const [modalOpen, setModalOpen] = useState(false);
