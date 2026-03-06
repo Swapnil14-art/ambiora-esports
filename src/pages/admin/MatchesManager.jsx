@@ -247,7 +247,7 @@ export default function MatchesManager() {
     };
 
     const gameSlug = games.find(g => g.id === form.game_id)?.slug;
-    const gameTeams = teams.filter(t => t.game_id === form.game_id);
+    const gameTeams = teams.filter(t => t.game_id === form.game_id && t.status !== 'disqualified');
 
     // Validation Rules
     const isTeamCountValid = () => {

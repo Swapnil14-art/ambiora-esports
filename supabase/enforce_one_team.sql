@@ -27,12 +27,13 @@ BEGIN
       RETURN NEW;
     END IF;
 
-    -- Check: Is the creator already a member of ANY team in this game?
+    -- Check: Is the creator already a member of ANY OTHER team in this game?
     SELECT COUNT(*) INTO _conflict_count
     FROM public.players p
     JOIN public.teams t ON p.team_id = t.id
     WHERE t.game_id = _game_id 
-      AND p.user_id = _user_id;
+      AND p.user_id = _user_id
+      AND t.id != NEW.id;
 
     IF _conflict_count > 0 THEN
       RAISE EXCEPTION 'User is already a member of a team in this game.';

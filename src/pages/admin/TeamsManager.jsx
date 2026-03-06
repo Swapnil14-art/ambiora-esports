@@ -5,7 +5,7 @@ import { fetchWithCache, invalidateCache, hasValidCache } from '../../lib/cache'
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../components/Toast';
 import Modal from '../../components/Modal';
-import { Plus, Pencil, Trash2, Search, ArrowLeft, Gamepad2, Users, UserMinus } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, ArrowLeft, Gamepad2, Users, UserMinus, ShieldCheck, ShieldX } from 'lucide-react';
 import SkeletonLoader from '../../components/ui/SkeletonLoader';
 
 export default function TeamsManager() {
@@ -187,6 +187,27 @@ export default function TeamsManager() {
         handleSelectGame(selectedGame); // Refresh
     };
 
+    const handleToggleStatus = async (team) => {
+        const newStatus = team.status === 'disqualified' ? 'qualified' : 'disqualified';
+        const { error } = await supabase
+            .from('teams')
+            .update({ status: newStatus })
+            .eq('id', team.id);
+
+        if (error) { toast.error(error.message); return; }
+
+        await supabase.from('audit_logs').insert({
+            user_id: profile.id,
+            action: `${newStatus === 'disqualified' ? 'Disqualified' : 'Re-qualified'} team: ${team.team_name}`,
+            details: { team_id: team.id, game: selectedGame.name, new_status: newStatus },
+        });
+
+        toast.success(`Team ${newStatus === 'disqualified' ? 'disqualified' : 're-qualified'}`);
+        invalidateCache(`admin_teams_${selectedGame.id}`);
+        invalidateCache('admin_all_teams');
+        handleSelectGame(selectedGame);
+    };
+
     // --- Roster Viewing ---
     const handleViewRoster = async (team) => {
         setSelectedTeamForRoster(team);
@@ -316,6 +337,7 @@ export default function TeamsManager() {
                             <thead>
                                 <tr>
                                     <th>Team Name</th>
+                                    <th>Status</th>
                                     <th>Led By</th>
                                     <th>Created</th>
                                     <th style={{ textAlign: 'right' }}>Actions</th>
@@ -323,11 +345,33 @@ export default function TeamsManager() {
                             </thead>
                             <tbody>
                                 {filteredTeams.map(team => (
-                                    <tr key={team.id}>
+                                    <tr key={team.id} style={team.status === 'disqualified' ? { opacity: 0.6, background: 'rgba(255, 62, 62, 0.04)' } : {}}>
                                         <td style={{ fontWeight: 600 }}>{team.team_name}</td>
+                                        <td>
+                                            {team.status === 'disqualified' ? (
+                                                <span className="badge" style={{ background: 'rgba(255, 62, 62, 0.15)', color: 'var(--neon-red)', border: '1px solid rgba(255, 62, 62, 0.3)', fontSize: '0.7rem' }}>DISQUALIFIED</span>
+                                            ) : (
+                                                <span className="badge" style={{ background: 'rgba(0, 255, 136, 0.1)', color: 'var(--neon-green)', border: '1px solid rgba(0, 255, 136, 0.3)', fontSize: '0.7rem' }}>QUALIFIED</span>
+                                            )}
+                                        </td>
                                         <td style={{ color: 'var(--text-secondary)' }}>{team.profiles?.display_name || team.profiles?.email || '—'}</td>
                                         <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(team.created_at).toLocaleDateString()}</td>
                                         <td className="cell-actions">
+                                            <button
+                                                className="btn btn-secondary"
+                                                onClick={() => handleToggleStatus(team)}
+                                                title={team.status === 'disqualified' ? 'Re-qualify Team' : 'Disqualify Team'}
+                                                style={{
+                                                    padding: '5px 10px',
+                                                    fontSize: '0.75rem',
+                                                    color: team.status === 'disqualified' ? 'var(--neon-green)' : 'var(--neon-red)',
+                                                    borderColor: team.status === 'disqualified' ? 'rgba(0, 255, 136, 0.3)' : 'rgba(255, 62, 62, 0.3)',
+                                                    gap: '4px',
+                                                }}
+                                            >
+                                                {team.status === 'disqualified' ? <ShieldCheck size={13} /> : <ShieldX size={13} />}
+                                                {team.status === 'disqualified' ? 'Qualify' : 'DQ'}
+                                            </button>
                                             <button className="btn btn-secondary" onClick={() => handleViewRoster(team)} style={{ padding: '6px 12px', fontSize: '0.85rem' }}>
                                                 <Users size={14} style={{ marginRight: '6px' }} /> Roster
                                             </button>

@@ -241,11 +241,12 @@ export const generateRulebookFixtures = async (gameSlug, gameId, phaseName) => {
 
     const { data: teams, error } = await supabase
         .from('teams')
-        .select('id, team_name')
-        .eq('game_id', gameId);
+        .select('id, team_name, status')
+        .eq('game_id', gameId)
+        .neq('status', 'disqualified');
 
     if (error) throw new Error("Failed to fetch teams: " + error.message);
-    if (!teams || teams.length === 0) throw new Error("No teams are registered for this game yet.");
+    if (!teams || teams.length === 0) throw new Error("No qualified teams are registered for this game yet.");
 
     // Delegate to the specific game's logic engine
     return await rulebook.generate(gameId, phaseName, teams);
