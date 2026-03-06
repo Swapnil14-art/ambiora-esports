@@ -112,46 +112,15 @@ export default function LoginPage() {
                 <div className="login-header">
                     <Gamepad2 size={36} style={{ color: 'var(--neon-purple)', margin: '0 auto 12px' }} />
                     <h1 className="text-gradient">AMBIORA ESPORTS</h1>
-                    <p style={{ fontWeight: 'bold', letterSpacing: '1px' }}>PARTICIPANTS LOGIN/SIGNUP</p>
+                    <p style={{ fontWeight: 'bold', letterSpacing: '1px' }}>PARTICIPANTS LOGIN</p>
                 </div>
 
                 {error && <div className="login-error">{error}</div>}
 
-                <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
-                    <button
-                        type="button"
-                        className={`btn ${mode === 'login' ? 'btn-primary' : 'btn-secondary'}`}
-                        style={{ flex: 1 }}
-                        onClick={() => { setMode('login'); setError(''); }}
-                        disabled={isSubmitting || authLoading}
-                    >
-                        Login
-                    </button>
-                    <button
-                        type="button"
-                        className={`btn ${mode === 'signup' ? 'btn-primary' : 'btn-secondary'}`}
-                        style={{ flex: 1 }}
-                        onClick={() => { setMode('signup'); setError(''); }}
-                        disabled={isSubmitting || authLoading}
-                    >
-                        Sign Up
-                    </button>
-                </div>
+
 
                 <form className="login-form" onSubmit={handleSubmit}>
-                    {mode === 'signup' && (
-                        <div className="form-group">
-                            <label className="form-label">Display Name</label>
-                            <input
-                                type="text"
-                                className="form-input"
-                                value={displayName}
-                                onChange={(e) => setDisplayName(e.target.value)}
-                                placeholder="Display name"
-                                required
-                            />
-                        </div>
-                    )}
+
                     <div className="form-group">
                         <label className="form-label">Email</label>
                         <input
@@ -182,16 +151,14 @@ export default function LoginPage() {
                     >
                         {isSubmitting ? (
                             <Loader size={16} className="spin" />
-                        ) : mode === 'login' ? (
-                            'AUTHENTICATE'
                         ) : (
-                            <><UserPlus size={16} style={{ marginRight: '8px' }} /> CREATE LEADER ACCOUNT</>
+                            'AUTHENTICATE'
                         )}
                     </button>
                 </form>
 
                 <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                    {mode === 'signup' ? 'New accounts act as Game Leaders. Admins must assign your specific game later.' : 'Access restricted. Default role requires manual assignment.'}
+                    Use your assigned credentials to log in.
                 </p>
 
                 <div style={{ borderTop: '1px solid var(--border)', marginTop: '16px', paddingTop: '16px', textAlign: 'center' }}>
