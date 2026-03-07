@@ -54,6 +54,7 @@ export default function Sidebar({ isOpen }) {
         { label: 'Fixtures', path: '/admin/fixtures', icon: Calendar },
         { label: 'Matches', path: '/admin/matches', icon: Swords },
         { label: 'Leaderboards', path: '/admin/leaderboards', icon: Trophy },
+        { label: 'LB Editor', path: '/admin/leaderboard-editor', icon: Trophy },
         { label: 'Audit Logs', path: '/admin/audit', icon: ClipboardList },
         { label: 'Export Data', path: '/admin/export', icon: FileDown },
     ];

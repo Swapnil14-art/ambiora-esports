@@ -13,6 +13,7 @@ import TeamsManager from './pages/admin/TeamsManager';
 import MatchesManager from './pages/admin/MatchesManager';
 import FixturesManager from './pages/admin/FixturesManager';
 import AdminLeaderboards from './pages/admin/Leaderboards';
+import LeaderboardEditor from './pages/admin/LeaderboardEditor';
 import AuditLogs from './pages/admin/AuditLogs';
 import ExportData from './pages/admin/ExportData';
 import UsersManager from './pages/admin/UsersManager';
@@ -105,6 +106,7 @@ export default function App() {
               <Route path="fixtures" element={<FixturesManager />} />
               <Route path="matches" element={<MatchesManager />} />
               <Route path="leaderboards" element={<AdminLeaderboards />} />
+              <Route path="leaderboard-editor" element={<LeaderboardEditor />} />
               <Route path="users" element={<UsersManager />} />
               <Route path="audit" element={<AuditLogs />} />
               <Route path="export" element={<ExportData />} />
