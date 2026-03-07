@@ -250,11 +250,12 @@ export default function MatchesManager() {
     const gameTeams = teams.filter(t => t.game_id === form.game_id && t.status !== 'disqualified');
 
     // Validation Rules
+    const isMultiTeamGame = gameSlug === 'bgmi' || gameSlug === 'f1';
     const isTeamCountValid = () => {
         if (!gameSlug) return false;
         const count = form.team_ids.length;
-        if (gameSlug === 'bgmi') return count >= 2 && count <= 20;
-        return count === 2; // Valorant, FIFA, F1 require exactly 2
+        if (isMultiTeamGame) return count >= 1;
+        return count === 2; // Valorant, FIFA require exactly 2
     };
 
     const isFormValid = () => {
@@ -273,9 +274,8 @@ export default function MatchesManager() {
             }
 
             // If we are selecting, check constraints
-            const maxTeams = gameSlug === 'bgmi' ? 20 : 2;
-            if (prev.team_ids.length >= maxTeams) {
-                toast.error(`Maximum ${maxTeams} teams allowed for ${gameSlug?.toUpperCase() || 'this game'}`);
+            if (!isMultiTeamGame && prev.team_ids.length >= 2) {
+                toast.error(`Maximum 2 teams allowed for ${gameSlug?.toUpperCase() || 'this game'}`);
                 return prev; // Do not update
             }
 
@@ -440,8 +440,8 @@ export default function MatchesManager() {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                                 <label className="form-label" style={{ margin: 0 }}>Team Roster Selection <span style={{ color: 'var(--neon-red)' }}>*</span></label>
                                 <span style={{ fontSize: '0.8rem', color: isTeamCountValid() ? 'var(--neon-cyan)' : 'var(--neon-red)', fontWeight: 600 }}>
-                                    {gameSlug === 'bgmi'
-                                        ? `Selected: ${form.team_ids.length} (Requires 2 to 20)`
+                                    {isMultiTeamGame
+                                        ? `Selected: ${form.team_ids.length} (1 or more)`
                                         : `Selected: ${form.team_ids.length} (Requires EXACTLY 2)`}
                                     {isTeamCountValid() && <CheckCircle size={12} style={{ marginLeft: '4px', verticalAlign: '-2px' }} />}
                                 </span>
@@ -457,7 +457,7 @@ export default function MatchesManager() {
                                             background: form.team_ids.includes(t.id) ? 'rgba(181, 55, 242, 0.1)' : 'var(--bg-input)',
                                             border: `1px solid ${form.team_ids.includes(t.id) ? 'var(--neon-purple)' : 'var(--border-secondary)'}`,
                                             borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', transition: 'all 0.2s',
-                                            opacity: (!form.team_ids.includes(t.id) && ((gameSlug !== 'bgmi' && form.team_ids.length >= 2) || (gameSlug === 'bgmi' && form.team_ids.length >= 20))) ? 0.5 : 1
+                                            opacity: (!form.team_ids.includes(t.id) && !isMultiTeamGame && form.team_ids.length >= 2) ? 0.5 : 1
                                         }}>
                                             <input type="checkbox" checked={form.team_ids.includes(t.id)} onChange={() => toggleTeam(t.id)} style={{ display: 'none' }} />
                                             <div style={{
