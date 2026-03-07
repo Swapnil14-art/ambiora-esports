@@ -82,8 +82,9 @@ export default function ViewerLeaderboards() {
                                         <th>Best Lap</th>
                                     ) : (
                                         <>
-                                            <th>Points</th>
+                                            <th>{isBGMI ? 'Placement Points' : 'Points'}</th>
                                             {isBGMI && <th>Total Kills</th>}
+                                            {isBGMI && <th>Total</th>}
                                             <th>Wins</th>
                                         </>
                                     )}
@@ -118,6 +119,11 @@ export default function ViewerLeaderboards() {
                                                     </td>
                                                     {isBGMI && (
                                                         <td style={{ color: 'var(--neon-red)', fontWeight: 600 }}>{e.total_kills || 0}</td>
+                                                    )}
+                                                    {isBGMI && (
+                                                        <td style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1rem', color: 'var(--neon-cyan)' }}>
+                                                            {(e.total_points || 0) + (e.total_kills || 0)}
+                                                        </td>
                                                     )}
                                                     <td>{e.wins || 0}</td>
                                                 </>
