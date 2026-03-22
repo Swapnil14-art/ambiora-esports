@@ -59,6 +59,29 @@ Managing esports tournaments manually (paper/Excel) leads to:
 - Designed for both admin control and user interaction
 
 ---
+## 📸 Product Preview
+
+### 🚀 Landing Page
+<p align="center">
+  <img src="docs/images/landing-page.png" width="900"/>
+</p>
+
+<p align="center">
+  <b>Seamless onboarding experience for players and teams.</b><br/>
+  Built to provide instant clarity on tournaments, registrations, and ongoing events with a clean and responsive interface.
+</p>
+
+---
+
+### 🛠️ Admin Dashboard
+<p align="center">
+  <img src="docs/images/admin-dashboard.png" width="900"/>
+</p>
+
+<p align="center">
+  <b>Central control system for tournament management.</b><br/>
+  Enables admins to manage teams, fixtures, results, and leaderboards with precision, ensuring real-time consistency and zero manual overhead.
+</p>
 
 ## 🧱 Tech Stack
 
