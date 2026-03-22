@@ -106,4 +106,8 @@ cd ambiora-esports
 npm install
 
 # Run development server
+<<<<<<< HEAD
 npm run dev
+=======
+npm run dev
+>>>>>>> c766fe05ea4e4f38f3bdf71eb81b3ff3c1a26b17
