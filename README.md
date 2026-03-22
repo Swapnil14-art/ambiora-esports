@@ -1,8 +1,39 @@
 # 🎮 Ambiora Esports
 
-A full-stack tournament management platform designed to handle esports competitions at scale — from team registration to match results and leaderboards.
+<p align="center">
+  <b>Full-stack esports tournament management platform</b><br/>
+  Built to handle competitions at scale — from registrations to real-time results and leaderboards.
+</p>
 
-Built and deployed for a live college tech event (**AMBIORA**).
+<p align="center">
+  🚀 Deployed for a live college tech event <b>(AMBIORA)</b>
+</p>
+
+---
+
+## 📸 Product Preview
+
+### 🚀 Landing Page
+<p align="center">
+  <img src="docs/images/landing-page.png" width="900"/>
+</p>
+
+<p align="center">
+  <b>Seamless onboarding for players and teams</b><br/>
+  Instantly communicates tournaments, registrations, and live events through a clean, responsive interface designed for clarity and speed.
+</p>
+
+---
+
+### 🛠️ Admin Dashboard
+<p align="center">
+  <img src="docs/images/admin-dashboard.png" width="900"/>
+</p>
+
+<p align="center">
+  <b>Centralized control for tournament operations</b><br/>
+  Manage teams, fixtures, results, and leaderboards in real-time with structured workflows and zero manual overhead.
+</p>
 
 ---
 
@@ -14,17 +45,17 @@ Managing esports tournaments manually (paper/Excel) leads to:
 - Inconsistent match data  
 - No real-time visibility  
 
-**Ambiora Esports** solves this by providing a centralized system with enforced constraints, real-time updates, and automated tournament flow.
+**Ambiora Esports** eliminates these issues with a centralized system that enforces constraints, ensures consistency, and automates tournament workflows.
 
 ---
 
 ## ⚙️ Features
 
 ### 🧠 Core Functionality
-- Tournament lifecycle management (registration → fixtures → results → leaderboard)
-- Admin dashboard for managing teams, players, and matches
+- End-to-end tournament lifecycle management (registration → fixtures → results → leaderboard)
+- Admin dashboard for teams, players, and match control
 - Real-time match updates and standings
-- Automated fixture & bracket generation
+- Automated fixture and bracket generation
 - Leaderboard computation and ranking logic
 
 ---
@@ -32,8 +63,8 @@ Managing esports tournaments manually (paper/Excel) leads to:
 ### 🔐 Constraint & Validation System
 - One user can join **only one team per game**
 - Same user can participate across **multiple games**
-- Prevention of duplicate registrations
-- Data consistency across all modules
+- Duplicate registration prevention
+- Strong validation to maintain data integrity
 
 ---
 
@@ -41,96 +72,69 @@ Managing esports tournaments manually (paper/Excel) leads to:
 - Role-based access:
   - Admin
   - Game Leader
-- Scoped permissions for secure operations
+- Scoped permissions for secure and controlled operations
 
 ---
 
 ### 📊 Data Handling
-- Structured data models for teams, matches, and tournaments
+- Structured schemas for teams, matches, and tournaments
 - Export functionality (CSV / Excel)
-- Audit logs for admin actions
-- Validation layers to prevent invalid states
+- Audit logs for admin-level actions
+- Multi-layer validation to prevent invalid states
 
 ---
 
 ### 🎨 UI/UX
 - Clean and responsive interface
-- Optimized for performance and usability
-- Designed for both admin control and user interaction
+- Optimized for speed and usability
+- Designed for both administrators and participants
 
 ---
-## 📸 Product Preview
-
-### 🚀 Landing Page
-<p align="center">
-  <img src="docs/images/landing-page.png" width="900"/>
-</p>
-
-<p align="center">
-  <b>Seamless onboarding experience for players and teams.</b><br/>
-  Built to provide instant clarity on tournaments, registrations, and ongoing events with a clean and responsive interface.
-</p>
-
----
-
-### 🛠️ Admin Dashboard
-<p align="center">
-  <img src="docs/images/admin-dashboard.png" width="900"/>
-</p>
-
-<p align="center">
-  <b>Central control system for tournament management.</b><br/>
-  Enables admins to manage teams, fixtures, results, and leaderboards with precision, ensuring real-time consistency and zero manual overhead.
-</p>
 
 ## 🧱 Tech Stack
 
-**Frontend:**
-- React / Next.js
+**Frontend**
+- React / Next.js  
 
-**Backend:**
-- Node.js (API handling)
+**Backend**
+- Node.js  
 
-**Database:**
-- MongoDB / Supabase (depending on your implementation)
+**Database**
+- MongoDB / Supabase  
 
-**Deployment:**
-- Vercel
+**Deployment**
+- Vercel  
 
 ---
 
 ## 📈 Impact
 
 - Managed **40+ teams, 4+ games, 45+ players, and 25+ matches**
-- Reduced manual effort and errors by **~80–90%** compared to paper-based workflows
-- Successfully used in a **live tournament environment**
+- Reduced manual effort and errors by **~80–90%**
+- Successfully deployed in a **live tournament environment**
 
 ---
 
 ## 🧩 System Design Highlights
 
-- Modular architecture for multi-game scalability  
+- Modular architecture supporting multi-game scalability  
 - Match lifecycle state management (create → update → complete)  
 - Constraint-driven backend logic  
-- Real-time data consistency across components  
+- Real-time synchronization across all modules  
 
 ---
 
 ## 🛠️ Setup & Installation
 
 ```bash
-# Clone the repository
+# Clone repository
 git clone https://github.com/your-username/ambiora-esports.git
 
-# Navigate to project
+# Navigate into project
 cd ambiora-esports
 
 # Install dependencies
 npm install
 
 # Run development server
-<<<<<<< HEAD
 npm run dev
-=======
-npm run dev
->>>>>>> c766fe05ea4e4f38f3bdf71eb81b3ff3c1a26b17
