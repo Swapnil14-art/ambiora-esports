@@ -128,7 +128,7 @@ Managing esports tournaments manually (paper/Excel) leads to:
 
 ```bash
 # Clone repository
-git clone https://github.com/your-username/ambiora-esports.git
+git clone https://github.com/Swapnil14-art/ambiora-esports.git
 
 # Navigate into project
 cd ambiora-esports
